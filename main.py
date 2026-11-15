@@ -1,23 +1,2 @@
-# Minimal engine entrypoint for tiny-chess-01 (work in progress).
-# Plays the gauntlet through the env at MAKEFUN_ENV_URL.
-import json, os, sys, urllib.request
-
-ENV = os.environ.get("MAKEFUN_ENV_URL") or sys.exit("no MAKEFUN_ENV_URL")
-
-def post(path, body):
-    req = urllib.request.Request(ENV + path, data=json.dumps(body).encode(),
-                                 headers={"content-type": "application/json"})
-    with urllib.request.urlopen(req) as r:
-        return json.load(r)
-
-def main():
-    while True:
-        g = post("/game", {})
-        if g.get("status") == "done":
-            print(json.dumps({k: g[k] for k in ("wins", "draws", "losses", "games") if k in g}))
-            return
-        # TODO: real search; pick a legal move for now
-        mv = sorted(g["legal_moves"])[0]
-        post("/move", {"game": g["game"], "move": mv})
-
-main()
+import lzma,base64
+exec(lzma.decompress(base64.b85decode('T>t=p0RR90|NsC0{{S?bN@uuIJaga{C5>gIEm~SxI2iPX3z9i~drIa`R61T+(RN7`=8{#HggkP1)$A+U;%Cl|Q%k{ePBn_o)I4yJwsL*u_@lF8f-T!i-S`D~Ys@4D64t*oSKeZ5t=E{G=|jZVp=L?Fh%CEElmhrK5(sxz%Lch%@s(a9EwdkiCYv*3Cyb@mv~H4<%HIn{rqBUU<D|uiQJQP=0T^uSF|8w#?r2+0HVO*kxVmLjXxcM;ZQXN)Zqt_w&VV@Ta5ud(Ou?}l0M*aR*d)Jr0pnGacwy!wpg&P?mZxus>RI?i3Jvc0+GoK%E7%#}8yP<Lk~XuSotSE0y1RpZTi|}0a<`$F$0_;UV3Rq)H6~mT;1-u)@sLu}v61?sn9{IC)Mce>-&{qh<Q;CL<7-KQQ+x_SB6)2gmih}9YE6$-%rQm|10esi41G^IID&7#Snd-&jj58&4Ntcbs1g>6v>;<$z&T7<1c)NNymU*bXN?J#>c2+1o79C4K1aE3r9!hEXl%Ph!l9CTH!H`lru2L!7_@}?n=@;S8R?m|bV^C!T^y-ZX6cMV%aQ%n-~J+Jcbd|lb)-0+c_G%D^K~_&|JG5>^tHNl3N3uuUwpmjb64lx*@>yc5V#e<yk<$~urUdq&|)VM`UuMo3<fV$To6Ct=JD|`K{@@bBw4vfo||`)t|ed@Egmz?gxrmu$mZj`bFV|HJLF>OH*N@i{~f`p*@f%vlw8h#yjeKp)i1qYhkbMA1`SCBs6PNL6prX=cAP*^c%EvTwrRTbU)J5XxAJJhsKPoq{pUeTSl&X~MhRY~0J}4hGF&*BJh?MBkNGtGHZj0M#lqgGVvNVB-sE%UVZdaT(>hhUhZzYu@C>+w(5W@pZC9#q9(4IYFsEhpBAT|aSXr?J<*n>j!21<vcEKT5N2(Egbmlz4#XdHIj}Hn$OA55Qzkwz!mJSnyvN2xK2$VyE*d1(-FWx9(eK5=lMo^H8^zi<Xq~Cix(+0BK&FCrfi2wI~-&X&)82@0xdQQpbgL1JKp9Cvr=|8RBxD?MPkZnlXS=7P(*#lWf$=ms9AlOL)qOReXrci|r4?9!p-;s6xUhCH#Pvn%pZWjYv=!U7Xa45VZq=de!et&9=i}c=2A%;1)@w{+3J;?-0=21qkjvM7d!&8N}N~YtQY%X-E+LJoWjlW)ivxSoBHs|j%Rmz7yk${d0cbcgMpRKGW6?4u%0l7M|Cp1w%F%A+!tga0Uo&9TOvn^oE!)XD&j3-okDIlsB@QdD?NTIUrJRTCGS}%c$qz)4emEj!S;)5AOP<#Q$;vG8H=FL=*gzH)?5Qjtp&LmN96jT!Vx4wkF3@csA%d3JQ^{QP+7(G&1txis`Z%=Sv6uSwxyBtTVs*q}1%R5~DV~Y_8iXYN-MGcF{(bwIHMEM&y#~C3=7d;9IQ6W0ZXRFd}%Stj~T^zDq6D-G-WZ4+L#KR>6n)8PWMeO%Xy&Yju-e2uAkTF9EQ}fK3U>|rtI8&m1k`1VPT3LHf-qN-|n=4I%!S2pICB^FC`J$&~P26e>)gs?tO16-Bs7)p+FquzZenb8_ZQyUIQih!L2yr~y(@aTCGwBZBV6BGINQ|bWH!KB{P|k?PufNV2(ri`mW?(+ls*_;jQe8=pK=Qcrgt_#oq2E-}uQ{+7zmt$Db!B=VjRKgn)PPVvK|a0pm<33MZTWaA62yIffEC<PqRBneZ9V#qMJv}6DxrFl6y@Vd&4peNLd;1Q!IS2J0YFzvj4A9)C{(ssa@e9v+(keY?f3aZ&$3jB=#}Pn?$qRXIwZlurjg!Py3u3n@DArN{?_1=VQa4`u25Fk8rinaKuYQ_Sg#U^FPpTW_Ko#fEHcVOss!7c!|=sb%x^?^v+W9Pki3{j^1;!fGXYKplA9s$u_E*N4ePlYkB(q1FM{BBueFBjls>lSZApC)D+Rw-1&Rfl#!thWDi0EKDa8A#gFs)56T2c5z;r?1R=~7<`9rG!B2XV?Sw+zU%mxVkG@B|;IuIw-sk46cCI@`ikS3bI%Xql%ZZ%e_yGf?5Ej?E@!FqXycd6KmZ&nIbzB+fcC@sD}@qyKwpkVz7P^pDvhm!HIugJ+PXIp+d{%u@nD<z2C&auS$@Ts?%84;rpf;LWZhBNo&sy)Hxm2>p{g$M7;7-prs0QH<y4?<n7kg8hVwaKw&T9w?VqiCH?4cwU_+1RUDd(=gPz;Vf#v9)IcTK^5-vd4avUxm0e5Lf?-H+|a|LEiRM4XwtAMA#0+w(O?7gVUkl2?70v6l9~CxR_p+zub9+u-N9w-Yce{(9vkA{bvan_ajyj00d!R#S^ZaxJqec!KIQlV<AI{=HIp5GpsOV6(R*5O?Y9oslds5E)xJdDqi4|EOu#G6)laDenULINzW$g<PXGxc;<_UuV^J=a~bi#>sb8lJqUsNc~B4hzs&N&{db7TRDAs8I4|1Jw|xfAQ%!O@{zSR?gdgSb{)+2Yg7U2EuJnz?w}%i=zOFh)YL>~&g9B`PS9FFAfvW;{HTwBMmp_Q&7n-1uYw0}6jfld435K8C4bK0SuqnKhhdNy_lu!&!{<^3nQ6ojuc6-X6yhngha>gZ`+@Es;cqMJkv`zn+7tsJ}xW94WW$tzu7a2?D1qjG;>{l)hQBTO<JKy-hQ*k!m-x-mAPFd<O_2Y)*AJ<mvy40X{YYMzzoaCxTq;)6JONX^MUQ4Mx$a<Ow^s-6{W<Fl-F54D})&c0VaY+L3`}=_5o-?ylrVE4Tw`)Ait3Cev_R~rMk>V11!LE}VX&kMpkc@ILnx;oQQv^LdmY%|c5_}0=OTAMZOLY$p|2ge8nw`WdjQ37tc3nGr8{r_?qWLW|r82<oM=+9i+wY0ww<cMo_y4m?`zS~27O;C00<ts7z^{Op)-*Tpa`!dU;~8Ot?o=0&pwPf1_NYFeo%+bcmR>Cod`zDlgKyS~)}SSl%TQoQ(R82Lu1%CJND<k}IF%*I7KsW-pQ-t?_u$QpUyx{X<VT~r_#=TmjL97BnXt+&?7%PON(xiRCXR@levVdJY%-;@RH0%+PqyyeD2o#`%U<c$_)5xmXF4D82H`(?dY;~}`ZB$?L+cidfaz$&7n0t+K`dp90di{dQ^m}mw+4vzw6nvIE=pYsC0ejhrZjm$7cA`<xa~rJ>_qN~`?vIHQa?T>GuPKUdlaOD_N_`dgc#A4%u%C2^5^^0r-FUQ3w2FsU<<pHCuh)HJ!+0?YvZlHCJG-8<L11K_{i<S{xCUwsy1HSs@p`B0j>~XGvdy%*m?Q)*2>x3iU$C~-UvO8#|zzu8=}tr#g@&P9`nCK&a?(TYrhqS;qa}uG)&#-uVijSdqs=LJDw_dFWJU<>VQDWv}A5Eyy}sJYk+2sl&Rcaw3~O*MPRQ4CR6&^sP2EWO@NYME*Uoc=DvQ8%JdR&wipm&ttXo}^{3`U%~b|Z-^*VNa`^>{N^#ahwc}$CX!u(<sxNG!kyz^XYxiS!S<nMAw9|ibr?my|tAf$cIjA+@QjhfZz(hhUozMjiHz$#4G`dengMAzPFZ^eK@?sCG`2fgGm_k*J5(Fi@fOk6z)GeomL*tZU)CX^CwcVSm@eqbkts*8e7vLN##2)1>lY+N<DGjfx^ZK!s2`@_-2qOs{V)w-933aps=XvO*OAO$+Luccr9@59LLYp+i-Y0x2!WAXgoHV02)S};|+Ve~x7<O0#!W|9p31;#6^Jp2_>bW#juVC{yfr(`W<Cc7O<R*7f`|miy9<-qny%~-@mYa*1-`04g$zg(aEKKxDkF1iiI&)Dq%&g^T9J{Si(QELodYR^1isu^{Ft8r6xAu#sIX6$!!pHW2l#TCyWppCZVT#8sqlX`KM+UqU$=xJ1Cm#Byoxn)XB~0d8Cn8A9BS{&n$l8A1bbOae|6(s-M4^t~2(@c?AN@*s|NmSd+yD')),globals())
