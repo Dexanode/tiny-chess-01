@@ -1,6 +1,4 @@
 __pycache__/
 *.pyc
-engine_full.py
-engine_dev.py
-e*.py
+engine*.py
 main_src.py
